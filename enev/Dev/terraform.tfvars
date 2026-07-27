@@ -7,6 +7,11 @@ resource_group = {
     name     = "bikerg"
     location = "westus"
   }
+   cycle = {
+    name     = "cyclerg"
+    location = "westus"
+  }
+  
 }
 vnet = {
   vm01 = {
