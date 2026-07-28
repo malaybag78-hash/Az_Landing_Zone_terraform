@@ -11,11 +11,14 @@ resource_group = {
     name     = "cyclerg"
     location = "westus"
   }
-    super_bike = {
-    name     = "super_bike_rg"
-    location = "Centralindia"
+   ship = {
+    name     = "shiprg"
+    location = "westus"  
   }
-  
+   laptop = {
+    name     = "laptop"
+    location = "centralindia"  
+  }
 }
 vnet = {
   vm01 = {
