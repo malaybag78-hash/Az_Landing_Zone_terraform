@@ -11,6 +11,10 @@ resource_group = {
     name     = "cyclerg"
     location = "westus"
   }
+    super_bike = {
+    name     = "super_bike_rg"
+    location = "Centralindia"
+  }
   
 }
 vnet = {
