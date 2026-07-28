@@ -11,6 +11,9 @@ resource_group = {
     name     = "cyclerg"
     location = "westus"
   }
+  ship = {
+    name     = "shiprg"
+    location = "westus"
   
 }
 vnet = {
