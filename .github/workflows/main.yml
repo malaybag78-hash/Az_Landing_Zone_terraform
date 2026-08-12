@@ -1,1 +1,84 @@
+name: CI/CD Pipeline
 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+
+  # =========================
+  # Stage 1: Scan & Plan
+  # =========================
+  scan-and-plan:
+    name: Scan and Plan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      - name: azure login
+        run: az login --service-principal --username 5155679f-5b82-4589-8521-6c6c2a50a73c --password _e68Q~wnwEcMu0Hq66e21CvV2BAHuuljzoCW0aAm --tenant 44ff9492-6357-4790-9759-8d5b4666c643
+
+      - name: Run tfsec
+        uses: aquasecurity/tfsec-action@v1.0.3
+        
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v6.3.0
+        with:
+          tflint_version: latest
+
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      - name: Upload Terraform Plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan
+          path: tfplan
+
+
+  # =========================
+  # Stage 2: Deploy
+  # =========================
+  deploy:
+    name: Deploy
+    needs: scan-and-plan
+    runs-on: ubuntu-latest
+
+    environment:
+      name: production
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        
+      - name: azure login
+        run: az login --service-principal --username 5155679f-5b82-4589-8521-6c6c2a50a73c --password _e68Q~wnwEcMu0Hq66e21CvV2BAHuuljzoCW0aAm --tenant 44ff9492-6357-4790-9759-8d5b4666c643
+
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Download Terraform Plan
+        uses: actions/download-artifact@v4
+        with:
+          name: terraform-plan
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
