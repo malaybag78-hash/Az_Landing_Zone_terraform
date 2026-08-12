@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: enev/Dev
+        working-directory: ./enev/Dev
 
     steps:
       - name: Checkout source code
@@ -30,7 +30,7 @@ jobs:
       - name: Run tfsec
         uses: aquasecurity/tfsec-action@v1.0.3
         with:
-          working_directory: enev/Dev
+          working_directory: ./enev/Dev
         
       - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v6.3.0
@@ -41,7 +41,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        working-directory: enev/Dev
+        working-directory: ./enev/Dev
         run: terraform init
 
       - name: Terraform Validate
@@ -66,7 +66,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: enev/Dev
+        working-directory: ./enev/Dev
 
     environment:
       name: production
@@ -82,13 +82,14 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
+        working-directory: ./enev/Dev
         run: terraform init
 
       - name: Download Terraform Plan
         uses: actions/download-artifact@v4
         with:
           name: terraform-plan
-          path: enev/Dev
+          path: ./enev/Dev
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
