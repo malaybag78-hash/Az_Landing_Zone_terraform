@@ -7,17 +7,9 @@ resource_group = {
     name     = "bikerg"
     location = "westus"
   }
-   cycle = {
+    cycle = {
     name     = "cyclerg"
     location = "westus"
-  }
-   ship = {
-    name     = "shiprg"
-    location = "westus"  
-  }
-   laptop = {
-    name     = "laptop"
-    location = "centralindia"  
   }
 }
 vnet = {
