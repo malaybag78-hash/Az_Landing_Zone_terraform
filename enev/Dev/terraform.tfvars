@@ -7,6 +7,10 @@ resource_group = {
     name     = "bikerg"
     location = "westus"
   }
+  pond = {
+    name     = "water"
+    location = "westus"
+  }
 }
 vnet = {
   vm01 = {
