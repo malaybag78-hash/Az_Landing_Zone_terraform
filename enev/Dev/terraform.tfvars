@@ -7,8 +7,8 @@ resource_group = {
     name     = "bikerg"
     location = "westus"
   }
-    cycle = {
-    name     = "cyclerg"
+  pond = {
+    name     = "water"
     location = "westus"
   }
 }

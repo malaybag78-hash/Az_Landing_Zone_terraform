@@ -24,8 +24,10 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
-      - name: azure login
-        run: az login --service-principal --username 5155679f-5b82-4589-8521-6c6c2a50a73c --password _e68Q~wnwEcMu0Hq66e21CvV2BAHuuljzoCW0aAm --tenant 44ff9492-6357-4790-9759-8d5b4666c643
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Run tfsec
         uses: aquasecurity/tfsec-action@v1.0.3
@@ -64,6 +66,8 @@ jobs:
     name: Deploy
     needs: scan-and-plan
     runs-on: ubuntu-latest
+    # Apply ONLY after push to main
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     defaults:
       run:
         working-directory: ./enev/Dev
@@ -75,9 +79,11 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
         
-      - name: azure login
-        run: az login --service-principal --username 5155679f-5b82-4589-8521-6c6c2a50a73c --password _e68Q~wnwEcMu0Hq66e21CvV2BAHuuljzoCW0aAm --tenant 44ff9492-6357-4790-9759-8d5b4666c643
-
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
       - name: Terraform Setup
         uses: hashicorp/setup-terraform@v3
 
