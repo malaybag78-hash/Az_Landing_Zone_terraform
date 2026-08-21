@@ -66,6 +66,8 @@ jobs:
     name: Deploy
     needs: scan-and-plan
     runs-on: ubuntu-latest
+    # Apply ONLY after push to main
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     defaults:
       run:
         working-directory: ./enev/Dev
